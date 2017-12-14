@@ -1,3 +1,4 @@
+# flake8: noqa
 from django.contrib import admin
 
 from waffle.models import Flag, Sample, Switch, VerifiedUser

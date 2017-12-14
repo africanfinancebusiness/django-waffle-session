@@ -1,9 +1,9 @@
+# flake8: noqa
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.http import HttpResponseNotFound, HttpResponseServerError
 
 from test_app import views
-
 
 handler404 = lambda r: HttpResponseNotFound()
 handler500 = lambda r: HttpResponseServerError()

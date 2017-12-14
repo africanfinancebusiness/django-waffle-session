@@ -1,3 +1,4 @@
+# flake8: noqa
 import random
 
 from django.contrib.auth.models import AnonymousUser, Group, User

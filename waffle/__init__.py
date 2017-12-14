@@ -1,3 +1,4 @@
+# flake8: noqa
 from decimal import Decimal
 import random
 import hashlib
@@ -33,10 +34,10 @@ def set_flag(request, flag_name, active=True, session_only=False):
 
 def flag_is_active(request, flag_name, custom_user='phone_number', msisdn=None, **kwargs):
     """
-    custom_group phone number is an alternate form of validation apart from the user and Group
-            it finds the custom_user from the request then check if the phone_number is in the VerifiedUser
-            and its feature is the flag_name
-         msisdn is alternate validation. it's a custom parameter that when passed in is checked whether it matches a regex/phone_number in VerifiedUser
+    custom_group phone number is an alternate form of validation apart from the user and Group it
+     finds the custom_user from the request then check if the phone_number is in the VerifiedUser
+     and its feature is the flag_name msisdn is alternate validation. it's a custom parameter
+     that when passed in is checked whether it matches a regex/phone_number in VerifiedUser
     :param request:
     :param flag_name:
     :param custom_user:
@@ -47,7 +48,7 @@ def flag_is_active(request, flag_name, custom_user='phone_number', msisdn=None, 
     from .compat import cache
 
     # review:
-    #flag = cache.get(keyfmt(settings.FLAG_CACHE_KEY, flag_name))
+    # flag = cache.get(keyfmt(settings.FLAG_CACHE_KEY, flag_name))
     flag = None
     if flag is None:
         try:

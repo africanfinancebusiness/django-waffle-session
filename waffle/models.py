@@ -1,3 +1,4 @@
+# flake8: noqa
 try:
     from django.utils import timezone as datetime
 except ImportError:
