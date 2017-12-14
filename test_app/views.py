@@ -23,12 +23,12 @@ def flag_in_django(request):
         'switch_var': 'switch_var',
         'sample_var': 'sample_var',
     })
-    return render(request, 'django/django.html', c)
+    return render_to_response('django/django.html', context_instance=c)
 
 
 def no_request_context(request):
     c = Context({})
-    return render_to_string('django/django_email.html', c)
+    return render_to_string('django/django_email.html', context_instance=c)
 
 
 @waffle_switch('foo')
