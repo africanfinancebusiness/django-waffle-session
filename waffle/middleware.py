@@ -1,9 +1,10 @@
+from django.utils.deprecation import MiddlewareMixin
 from django.utils.encoding import smart_str
 
 from . import settings
 
 
-class WaffleMiddleware(object):
+class WaffleMiddleware(MiddlewareMixin):
     def process_response(self, request, response):
         secure = settings.SECURE
         max_age = settings.MAX_AGE
