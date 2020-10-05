@@ -3,9 +3,7 @@ import random
 import hashlib
 import re
 
-
 from . import settings
-
 
 VERSION = (0, 10, 1)
 __version__ = '.'.join(map(str, VERSION))
@@ -19,6 +17,7 @@ def keyfmt(k, v=None):
 
 class DoesNotExist(object):
     """The record does not exist."""
+
     @property
     def active(self):
         return settings.SWITCH_DEFAULT
@@ -72,21 +71,32 @@ def flag_is_active(request, flag_name, **kwargs):
         user = getattr(request, custom_user, None) or msisdn
         if user:
             # Try query for cached value
-            cached_verified_user = cache.get(keyfmt(settings.VERIFIED_USER_CACHE_KEY, user))
+            cached_verified_user = cache.get(keyfmt(settings.VERIFIED_USER_CACHE_KEY, (flag.name + user)))
             if cached_verified_user:
-                if cached_verified_user.feature.id == flag.id:
-                    return True
+                return True
 
             # Fallback to DB lookup
-            for verified_user in VerifiedUser.objects.filter(feature_id=flag.id):
-                local_regex = verified_user.phone_number
+            if not regex:
+                try:
+                    VerifiedUser.objects.get(phone_number=user, flag=flag)
+                    cache_verified_user(instance=(flag.name + user))
+                    return True
+                except:
+                    return False
+            verified_user_set = cache.get(keyfmt("vuser:%s", flag.name))
+            if not verified_user_set:
+                verified_user_set = set(
+                    flag.verifieduser_set.all().values_list('phone_number', flat=True)
+                )
+                cache.add(keyfmt("vuser:%s", flag.name), verified_user_set)
+            for local_regex in verified_user_set:
                 try:
                     match = re.search(local_regex, user)
                     if match is not None:
                         # Cache the verified user for future use :)
                         # Caveat: Since verified_user's phone number is not unique,
                         # only the current instance can be cached at a time.
-                        cache_verified_user(instance=verified_user)
+                        cache_verified_user(instance=(flag.name + user))
                         return True
                 except:
                     pass
@@ -133,7 +143,7 @@ def flag_is_active(request, flag_name, **kwargs):
     if flag.languages:
         languages = flag.languages.split(',')
         if (hasattr(request, 'LANGUAGE_CODE') and
-                request.LANGUAGE_CODE in languages):
+            request.LANGUAGE_CODE in languages):
             return True
 
     if flag.percent and flag.percent > 0:

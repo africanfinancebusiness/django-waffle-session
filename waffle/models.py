@@ -186,12 +186,12 @@ post_save.connect(uncache_switch, sender=Switch, dispatch_uid='save_switch')
 
 def cache_verified_user(**kwargs):
     verified_user = kwargs.get('instance')
-    cache.add(keyfmt(settings.VERIFIED_USER_CACHE_KEY, verified_user.phone_number), verified_user)
+    cache.add(keyfmt(settings.VERIFIED_USER_CACHE_KEY, verified_user), verified_user)
 
 
 def uncache_verified_user(**kwargs):
     verified_user = kwargs.get('instance')
-    cache.set(keyfmt(settings.VERIFIED_USER_CACHE_KEY, verified_user.phone_number), None, 5)
+    cache.set(keyfmt(settings.VERIFIED_USER_CACHE_KEY, verified_user), None, 5)
 
 
 post_delete.connect(uncache_verified_user, sender=VerifiedUser,
