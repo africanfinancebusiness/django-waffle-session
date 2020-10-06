@@ -78,7 +78,7 @@ def flag_is_active(request, flag_name, **kwargs):
             # Fallback to DB lookup
             if not regex:
                 try:
-                    VerifiedUser.objects.get(phone_number=user, flag=flag)
+                    VerifiedUser.objects.get(phone_number=user, feature=flag)
                     cache_verified_user(instance=(flag.name + user))
                     return True
                 except:
