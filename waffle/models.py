@@ -68,10 +68,6 @@ class VerifiedUser(models.Model):
     def __str__(self):
         return self.phone_number
 
-    class Meta:
-        indexes = [
-            models.Index(fields=["feature", "phone_number"])
-        ]
 
 @python_2_unicode_compatible
 class Switch(models.Model):
