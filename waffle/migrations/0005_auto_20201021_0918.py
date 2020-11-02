@@ -12,6 +12,6 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddIndex(
             model_name='verifieduser',
-            index=models.Index(fields=['feature', 'phone_number'], name='waffle_verifieduser_feature_id_phone_number_86d175dd'),
+            index=models.Index(fields=['feature', 'phone_number'], name='verified_user_feature_phone'),
         ),
     ]
